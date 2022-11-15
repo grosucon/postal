@@ -23,6 +23,16 @@
           %p.fieldSet__text
             Choose the time zone that your organization exists within. This is used when displaying times in places
             where there isn't a logged in user to provide their own time zone.
+      .fieldSet__field
+        = f.label :server_limit, :class => 'fieldSet__label'
+        .fieldSet__input
+          = f.text_field :server_limit, :class => 'input input--text', :placeholder => "No limit"
+          %p.fieldSet__text This is the maximum number servers that can be created for this organization.
+      .fieldSet__field
+        = f.label :server_send_limit, 'Send limit', :class => 'fieldSet__label'
+        .fieldSet__input
+          = f.text_field :server_send_limit, :class => 'input input--text', :placeholder => "No limit"
+          %p.fieldSet__text This is the default maximum number of e-mails that can be sent through mail server in a 60 minute period.
 
     %p.fieldSetSubmit.buttonSet
       = f.submit "Save Settings", :class => 'button button--positive js-form-submit'

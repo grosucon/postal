@@ -2,6 +2,13 @@
 
 This file contains all the latest changes and updates to Postal.
 
+## 2.2.0
+
+### Features
+
+- Add server limit per organization
+- Add default server send limit per organization
+
 ## 2.1.2
 
 ### Features

@@ -18,7 +18,7 @@ class OrganizationsController < ApplicationController
   end
 
   def create
-    @organization = Organization.new(params.require(:organization).permit(:name, :permalink))
+    @organization = Organization.new(params.require(:organization).permit(:name, :permalink, :server_limit, :server_send_limit))
     @organization.owner = current_user
     if @organization.save
       redirect_to_with_json organization_root_path(@organization)
@@ -33,7 +33,7 @@ class OrganizationsController < ApplicationController
 
   def update
     @organization_obj = current_user.organizations_scope.find(organization.id)
-    if @organization_obj.update(params.require(:organization).permit(:name, :time_zone))
+    if @organization_obj.update(params.require(:organization).permit(:name, :time_zone, :server_limit, :server_send_limit))
       redirect_to_with_json organization_settings_path(@organization_obj), :notice => "Settings for #{@organization_obj.name} have been saved successfully."
     else
       render_form_errors 'edit', @organization_obj

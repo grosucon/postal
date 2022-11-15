@@ -76,6 +76,9 @@ class Server < ApplicationRecord
   validates :mode, :inclusion => {:in => MODES}
   validates :permalink, :presence => true, :uniqueness => {:scope => :organization_id}, :format => {:with => /\A[a-z0-9\-]*\z/}, :exclusion => {:in => RESERVED_PERMALINKS}
   validate :validate_ip_pool_belongs_to_organization
+  validate :validate_organization_server_limit
+
+  before_create :set_organization_default_send_limit
 
   before_validation(:on => :create) do
     self.token = self.token.downcase if self.token
@@ -271,6 +274,17 @@ class Server < ApplicationRecord
     if self.ip_pool && self.ip_pool_id_changed? && !self.organization.ip_pools.include?(self.ip_pool)
       errors.add :ip_pool_id, "must belong to the organization"
     end
+  end
+
+  def validate_organization_server_limit
+    return unless organization
+    return unless organization.server_limit_reached?
+
+    errors.add :base, "Maximum limit of #{organization.server_limit} servers for this organization reached!"
+  end
+
+  def set_organization_default_send_limit
+    self.send_limit ||= organization&.server_send_limit
   end
 
   def ip_pool_for_message(message)
