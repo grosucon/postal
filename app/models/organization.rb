@@ -69,6 +69,12 @@ class Organization < ApplicationRecord
     suspended_at.present?
   end
 
+  def server_limit_reached?
+    return false if server_limit.blank?
+
+    servers.present.count >= server_limit
+  end
+
   def user_assignment(user)
     @user_assignments ||= {}
     @user_assignments[user.id] ||= organization_users.where(:user => user).first

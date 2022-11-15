@@ -32,4 +32,5 @@
           %p.noData__title No servers were found...
           %p.noData__text
             There were no servers found matching what you've typed it.
-    %p.u-center= link_to "Build a new mail server", [:new, organization, :server], :class => 'button button--positive'
+    - unless @organization.server_limit_reached?
+      %p.u-center= link_to "Build a new mail server", [:new, organization, :server], :class => 'button button--positive'
